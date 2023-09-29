@@ -2,14 +2,11 @@ import fs from 'fs';
 import readline from 'readline';
 
 async function updateM3UFile(filePath: string, newUsername: string, newPassword: string) {
-    const input = fs.createReadStream(filePath);
-    const output = fs.createWriteStream(filePath + '.tmp');
-
     const rl = readline.createInterface({
         input: fs.createReadStream(filePath),
         terminal: false
     });
-
+    const output = fs.createWriteStream(filePath + '.tmp');
     rl.on('line', (line) => {
         // Assuming that the format is http://example.com:8080/live/USERNAME/PASSWORD/123.ts
         let updatedLine = line.replace(/(username=)([^&]+)(&password=)([^&]+)(&type=m3u_plus&output=ts)/g, `$1${newUsername}$3${newPassword}$5`);
